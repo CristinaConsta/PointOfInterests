@@ -16,19 +16,12 @@
               <a href="/" class="close" data-dismiss="modal" aria-label="close">&times;</a>
             </div>
             <div class="modal-body">
-              <form action="/create-user" method=POST>
+              <form action="/register-user" method=POST>
                 <div class="mb-3">
                   <label for="username" class="col-form-label">Username:</label>
                   <input id="username" name="username" type="text" class="form-control">
-                  <% if (errors['name']) { %>         
-                    <p style="color: red"><%= errors['name'].message %></p> 
-                    <% } %>
-                </div>
-                <div class="mb-3">
-                  <label for="emailAdr" class="col-form-label">Email:</label>
-                  <input id="emailAdr" name="email" type="email" class="form-control">
-                  <% if (errors['email']) { %>         
-                    <p style="color: red"><%= errors['email'].message %></p> 
+                  <% if (errors['username']) { %>         
+                    <p style="color: red"><%= errors['username'].message %></p> 
                     <% } %>
                 </div>
                 <div class="mb-3">

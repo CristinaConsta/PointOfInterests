@@ -5,20 +5,17 @@ const bcrypt = require('bcrypt');
 //create user
 
 exports.registerUser = async (req, res) => {
-  let newUser = await User.findOne({ email: req.body.email });
+  let newUser = await User.findOne({ username: req.body.username });
   if (newUser) {
-    res.render("create-user", { errors: { email: { message: 'The email already used' } } })
+    res.render("register-user", { errors: { username: { message: 'The name already used' } } })
     return
   } else {
-    newUser = new User({ name: req.body.username, email: req.body.email, password: req.body.password });
+    newUser = new User({ username: req.body.username, password: req.body.password });
     if(!req.body.username){
-    res.render("create-user", { errors: {name: {message: "Username is required"}}})
+    res.render("register-user", { errors: {username: {message: "Username is required"}}})
     return
-  }else if(!req.body.email){
-      res.render("create-user", { errors: {email: {message: "Email is required"}}})
-      return
-    }else if(!req.body.password){
-        res.render("create-user", { errors: {password: {message: "Password is required"}}})
+  }else if(!req.body.password){
+        res.render("register-user", { errors: {password: {message: "Password is required"}}})
         return
     }else{
     await newUser.save();
@@ -34,35 +31,23 @@ exports.registerUser = async (req, res) => {
 
 // login (retrieve) user
 
-exports.login = async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email});
+// exports.login = async (req, res) => {
+//   try {
+//     const user = await User.findOne({ username: req.body.username});
+//     console.log(user);
+//   if (!user) {
+//     res.render("login-user", { errors: { username: { message: 'username not found' } } })
+//     return
+//   }
+//     const match = await bcrypt.compare(req.body.passwordLogin, user.password);
+//     if (match) {
+//       req.session.userID=user._id;
+//       res.redirect("/");
+//       return
+//     }
+//       res.render("login-user", { errors: { password: { message: 'password does not match' } } })
+//     } catch (e) {
+//     return res.status(400).send({message: JSON.parse(e)});
+//   }
+// }
 
-  if (!user) {
-    res.render("login-user", { errors: { email: { message: 'email not found' } } })
-    return
-  }
-    const match = await bcrypt.compare(req.body.passwordLogin, user.password);
-    if (match) {
-      req.session.userID=user._id;
-      res.redirect("/");
-      return
-    }
-      res.render("login-user", { errors: { password: { message: 'password does not match' } } })
-    } catch (e) {
-    return res.status(400).send({message: JSON.parse(e)});
-  }
-}
-
-// delete user
-exports.delete = async (req, res) => {  
-  const id = global.user;             
-  try {
-    await User.findByIdAndRemove(id);  
-    res.redirect("/logout");            
-  } catch (e) {                           
-    res.status(404).send({                
-      message: `could not delete  record ${id}.`, 
-    });
-  }
-};

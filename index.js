@@ -6,9 +6,14 @@ const app = express();
 bodyParser = require("body-parser");
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+require('./app/routes/routes.js')(app);
 
 const auth = require('./app/middleware/auth.js');
-require('./app/routes/routes.js')(app);
+const user=require("./app/controllers/user");
+const poi=require("./app/controllers/pointOfInterest");
 
 const { PORT} = process.env;
 const db=require("./config/configdb.js");
@@ -23,53 +28,39 @@ mongoose.connection.on("error", (err) => {
 });
 
 
-app.get('/', auth.isLoggedIn, (req, res)=>{
+auth.auth();
+
+//1
+app.get("/login-user", auth.isLoggedOut, (req, res) =>{
+  res.render("login-user", {errors: {}});
+ });
+
+//2
+app.get('/', auth.isLoggedOut, auth.isLoggedIn, (req, res)=>{
   res.render('index', {user_name});
 });
 
+//3
+app.post('/login-user', auth.authenticate);
 
+
+//4
 app.get('/register-user', (req, res)=>{
-    res.render('register-user');
-    });    
-
-app.get('/login-user', auth.isLoggedOut, (req, res)=>{
-      res.render('login-user');
-});
-  
-// app.post('/login-user', passport.authenticate('local',{
-//   successRedirect: '/',
-//   failureRedirect: '/login-user'
-// }));
-
-app.get('/register-user', (req, res)=>{
-  res.render('register-user');
+  res.render('register-user', {errors: {}});
 });
 
+//5
 app.get("/logout", (req, res)=>{
   req.logout();
   res.redirect('/');
 });
 
-// app.post('/register', async (req, res)=>{
-//   try{
-//       const new_pass= await bcrypt.hash(req.body.password, 10);
-//       var new_user=new User({
-//       username: req.body.username,
-//       email: req.body.email,
-//       password: new_pass
-//   });
-//   new_user.save((err, result)=>{
-//       if (err) return console.log(err);
-//   });
-//   res.redirect('/login');
-// }
-// catch(err) {res.redirect('/register');};
-// });
+//6
+app.post('/register-user', user.registerUser, (req, res)=>{
+    res.render('login-user');
+});    
 
-// app.post('/register', isLoggedIn, (req, res)=>{
-//   res.render('register');
-// });
-    
+
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`);
   });

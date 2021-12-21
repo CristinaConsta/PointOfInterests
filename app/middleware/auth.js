@@ -5,9 +5,12 @@ const app = express();
 const path= require("path");
 const localstrategy=require('passport-local').Strategy;
 const session =require('express-session');
+const user=require("../controllers/user");
+
+var user_name="";
 
 app.use(session({
-  secret: "amjad",
+  secret: "secret",
   resave:false,
   saveUninitialized: true
 }));
@@ -34,45 +37,74 @@ passport.deserializeUser(function(id, done) {
 
 //here we will define the local strategy for authentication
 
-var user_name="";
 
-passport.use(new localstrategy(
-    function(username, password, done) {
-      user_name=username;
-      User.findOne({ name: username }, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        bcrypt.compare(password, user.password, function(err, res){
-            if (err) return done(err);
-            if (res===false) return done(null, false);
-            return done(null, user);
-        });
-       
-      });
-    }
-  ));
+
+const auth =  async (req, res, next) => {
+    passport.use(new localstrategy(
+          function(username, password, done) {
+            user_name=username;
+            User.findOne({ name: username }, function (err, user) {
+              if (err) { return done(err); }
+              if (!user) { return done(null, false); }
+              bcrypt.compare(password, user.password, function(err, res){
+                  if (err) return done(err);
+                  if (res===false) return done(null, false);
+                  return done(null, user);
+              });
+             
+            });
+          }
+        ))};
 
 function isLoggedIn(req, res, next)
 {
     if (req.isAuthenticated) return next();
-    res.redirect('/login-user');
+    res.render('index', {user_name});
 }
 
 function isLoggedOut(req, res, next)
 {
     if (!req.isAuthenticated) return next();
-    res.redirect('/');
+    res.redirect('/login-user');
 }
 
+const authenticate = async (req,res)=>
+{ 
+  passport.authenticate('local',
+  {
+    successRedirect: isLoggedIn(req,res),
+    failureRedirect: '/login-user'
+  });
+};
 
+// app.post('/login-user', passport.authenticate('local',{
+//   successRedirect: '/',
+//   failureRedirect: '/login-user'
+// }));
 
+// // app.get("/", isLoggedOut, isLoggedIn);
 
-app.get('/register-user', (req, res)=>{
-    res.render('register-user');
-    });    
+// app.post('/register-user', user.registerUser, (req, res)=>{
+//     res.render('login-user');
+//     });    
 
-app.get('/login-user', isLoggedOut, (req, res)=>{
-      res.render('login-user');
-});
+// app.get('/register-user', user.registerUser, (req, res)=>{
+//       res.render('register-user');
+//     });    
 
-module.exports={isLoggedIn, isLoggedOut};
+// app.get("/login-user", (req, res) =>{
+//       res.render("login-user", {errors: {}});
+//      });
+
+// // app.post('/login-user', auth.auth);
+  
+// app.get('/register-user', (req, res)=>{
+//   res.render('register-user', {errors: {}});
+// });
+
+// app.get("/logout", (req, res)=>{
+//   req.logout();
+//   res.redirect('/');
+// });
+
+module.exports={isLoggedIn, isLoggedOut, auth, authenticate};

@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css'/>
+    <script type='text/javascript' src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Points of Interest</title>
@@ -11,24 +13,26 @@
 <body>
 
      
-<div class="header">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a href="#" class="navbar-brand">Point Of Interest</a>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+    <div class="row bg-info">
+        <nav class="navbar navbar-expand-lg navbar-light bg-info col-sm-9 float-left">
+          <div class="container-fluid">
+            <a class="navbar-brand bg-info fs-4" href="/">Points of interest</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="navbar-nav">
                 <a href="#" class="nav-item nav-link active">Home</a>
-                <a href="/" class="nav-item nav-link">Add point of Interest</a>
-                <a href="#" class="nav-item nav-link">Add Review</a>
+                <a href="create-poi" class="nav-item nav-link">Add point of Interest</a>
+                <a href="create-review" class="nav-item nav-link">Add Review</a>
             </div>
             <div>
             <form class="form-inline">
                 <div class="input-group">                    
-                    <input type="text" class="form-control" placeholder="Search" name="search_data" id="search">
-                    <div class="input-group-append">
-                        <button  type="button" class="btn btn-secondary" id="search_poi"><i class="fa fa-search"></i></button>                    
-                    </div>
+                    <input type="text" class="form-control" placeholder="Search point of interest" name="search_data" id="search">
+                    <a class="btn btn-secondary" id="search_poi">Search</a></button>                    
                 </div>
+            </div>
             </form>
             </div>
             <div class="col-sm-3">
@@ -44,7 +48,32 @@
 
 
 <div id="result"></div>
+<script>
+ 
+    //----------------------------------------------------------------------------
+        document.getElementById("search_poi").addEventListener("click", ()=> {
+        // Read the product type from a text field
+        var region = document.getElementById('search').value;
+        ajaxSearch(region);
+    });
+</script>
+<div id="map1" class="container-fluid" style="width:100%; height:900px; margin-top:5px;" > </div>
 
+<script>
+const map = L.map ("map1");
 
+const attrib="Map data copyright OpenStreetMap contributors, Open Database Licence";
+
+L.tileLayer
+        ("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            { attribution: attrib } ).addTo(map);
+
+const pos = [50.908, -1.4];            
+map.setView(pos, 10);
+L.marker(pos).addTo(map);
+</script>  
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>alert(user_name)</script>
 </body>
 </html>
