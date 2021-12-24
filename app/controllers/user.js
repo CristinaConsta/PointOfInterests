@@ -31,23 +31,23 @@ exports.registerUser = async (req, res) => {
 
 // login (retrieve) user
 
-// exports.login = async (req, res) => {
-//   try {
-//     const user = await User.findOne({ username: req.body.username});
-//     console.log(user);
-//   if (!user) {
-//     res.render("login-user", { errors: { username: { message: 'username not found' } } })
-//     return
-//   }
-//     const match = await bcrypt.compare(req.body.passwordLogin, user.password);
-//     if (match) {
-//       req.session.userID=user._id;
-//       res.redirect("/");
-//       return
-//     }
-//       res.render("login-user", { errors: { password: { message: 'password does not match' } } })
-//     } catch (e) {
-//     return res.status(400).send({message: JSON.parse(e)});
-//   }
-// }
+exports.login = async (req, res) => {
+   try {
+    const user = await User.findOne({ username: req.body.username});
+   if (!user) {
+    res.render("login-user", { errors: { username: { message: 'username not found' } } })
+    return
+  }
+    const match = await bcrypt.compare(req.body.password, user.password);
+    if (match) {
+      // req.session.userID=user._id;
+      res.render("index", user.username);
+      console.log(user.username);
+      return
+    }
+      res.render("login-user", { errors: { password: { message: 'password does not match' } } })
+    } 
+     catch(err) {res.status(400).send(err.message);  
+    }
+}
 

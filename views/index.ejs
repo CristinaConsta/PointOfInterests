@@ -11,10 +11,9 @@
 </head>
 
 <body>
-
-     
-    <div class="row bg-info">
+   <div class="row bg-info">
         <nav class="navbar navbar-expand-lg navbar-light bg-info col-sm-9 float-left">
+        <div class="col-sm-5">
           <div class="container-fluid">
             <a class="navbar-brand bg-info fs-4" href="/">Points of interest</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -26,26 +25,27 @@
                 <a href="create-poi" class="nav-item nav-link">Add point of Interest</a>
                 <a href="create-review" class="nav-item nav-link">Add Review</a>
             </div>
-            <div>
+            </div>
+        </div>
+            <div class="col-sm-4">
             <form class="form-inline">
                 <div class="input-group">                    
                     <input type="text" class="form-control" placeholder="Search point of interest" name="search_data" id="search">
                     <a class="btn btn-secondary" id="search_poi">Search</a></button>                    
                 </div>
-            </div>
             </form>
             </div>
-            <div class="col-sm-3">
+        </nav>
+             <div class="col-sm-3 mt-4">
                 <% if (user_name) { %> 
-                <a class="btn" href="logout">Welcome  <%= user_name %> | Logout </a></button>
+                <a class="btn" href="logout">Welcome <%= user_name %> | Logout </a></button>
                 <% } %>
+                <% if (!user_name) { %> 
                 <a class="btn" href="login-user">Login</a></button>
                 <a class="btn" href="register-user" >Register</a></button>
+                <% } %>
             </div>
-        </div>
-    </nav>
-</div>
-
+    </div>
 
 <div id="result"></div>
 <script>

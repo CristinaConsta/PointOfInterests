@@ -1,5 +1,6 @@
 const express=require("express");
 const mongoose=require("mongoose");
+const passport=require("passport");
 const path=require("path");
 require("dotenv").config();
 const app = express();
@@ -10,11 +11,16 @@ app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 require('./app/routes/routes.js')(app);
+const localstrategy=require('passport-local').Strategy;
+const session =require('express-session');
+const User = require("./app/models/User");
+const bcrypt = require('bcrypt');
 
-const auth = require('./app/middleware/auth.js');
+
+// const auth = require('./app/middleware/auth.js');
 const user=require("./app/controllers/user");
 const poi=require("./app/controllers/pointOfInterest");
-
+// const user_name= auth.user_name;
 const { PORT} = process.env;
 const db=require("./config/configdb.js");
 
@@ -27,38 +33,161 @@ mongoose.connection.on("error", (err) => {
   process.exit();
 });
 
+var user_name="";
 
-auth.auth();
+//here are all the middleware
+// app.set('view engine', 'hbs');
+// app.use(express.static(__dirname+'/public'));
+// hbs.registerPartials(partialspath);
+app.use(session({
+    secret: "secret",
+    resave:false,
+    saveUninitialized: true
+}));
+
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+//we set middleware related with passport
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//to add the user detail in the session
+passport.serializeUser(function(user, done){
+    done(null, user.id);
+});
+
+//to read the user detail in the session
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user);
+    })
+});
+
+//here we will define the local strategy for authentication
+
+passport.use(new localstrategy(
+    function(username, password, done) {
+      user_name=username;
+      User.findOne({ username: username }, function (err, user) {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        bcrypt.compare(password, user.password, function(err, res){
+            if (err) return done(err);
+            if (res===false) return done(null, false);
+            return done(null, user);
+        });
+       
+      });
+    }
+  ));
+
+function isLoggedIn(req, res, next)
+{
+    if (req.isAuthenticated()) return next();
+    res.redirect('/login-user');
+}
+
+function isLoggedOut(req, res, next)
+{
+    if (!req.isAuthenticated()) return next();
+    res.redirect('/');
+}
 
 //1
-app.get("/login-user", auth.isLoggedOut, (req, res) =>{
-  res.render("login-user", {errors: {}});
- });
+app.get("/login-user", isLoggedOut, (req, res) =>{
+      res.render("login-user", {errors: {}});
+     });
 
 //2
-app.get('/', auth.isLoggedOut, auth.isLoggedIn, (req, res)=>{
-  res.render('index', {user_name});
+app.get('/', isLoggedIn, (req, res)=>{
+    res.render('index', {user_name});
 });
 
 //3
-app.post('/login-user', auth.authenticate);
-
+app.post('/login-user', passport.authenticate('local',{
+    successRedirect: '/',
+    failureRedirect: '/login-user'
+}));
 
 //4
 app.get('/register-user', (req, res)=>{
-  res.render('register-user', {errors: {}});
+    res.render('register-user', {errors: {}});
 });
 
 //5
 app.get("/logout", (req, res)=>{
-  req.logout();
-  res.redirect('/');
+    req.logout();
+    res.redirect('/');
 });
 
 //6
+
 app.post('/register-user', user.registerUser, (req, res)=>{
     res.render('login-user');
-});    
+});  
+
+// app.post('/register-user', async (req, res)=>{
+//     try{
+//         const new_pass= await bcrypt.hash(req.body.password, 10);
+//         var new_user=new User({
+//         username: req.body.username,
+//         email: req.body.email,
+//         password: new_pass
+//     });
+//     new_user.save((err, result)=>{
+//         if (err) return console.log(err);
+//     });
+//     res.redirect('/login');
+// }
+// catch(err) {res.redirect('/register');};
+// });
+
+//7
+app.post('/register', isLoggedIn, (req, res)=>{
+    res.render('register');
+});
+
+//8
+// app.get('/addpoi', isLoggedIn, (req, res)=>{
+//     res.render('addpoi');
+// });
+
+// -------------
+
+// auth.auth();
+
+// //1
+// app.get("/login-user", auth.isLoggedOut, (req, res) =>{
+//   res.render("login-user", {errors: {}});
+//  });
+
+// //2
+// app.get('/', auth.isLoggedOut, auth.isLoggedIn, (req, res)=>{
+//   res.render('index', {user_name});
+// });
+
+// //3
+// console.log({user_name});
+// app.post('/login-user', user.login);
+// console.log({user_name});
+
+// //4
+// app.get('/register-user', (req, res)=>{
+//   res.render('register-user', {errors: {}});
+// });
+
+// //5
+// app.get("/logout", (req, res)=>{
+//   req.logout();
+//   res.redirect('/');
+// });
+
+// //6
+// app.post('/register-user', user.registerUser, (req, res)=>{
+//     res.render('login-user');
+// });    
 
 
 app.listen(PORT, () => {
