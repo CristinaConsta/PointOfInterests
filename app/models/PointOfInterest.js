@@ -11,7 +11,7 @@ const poi = new mongoose.Schema({
       lat:          {type: Number, required: true},
       lon:          {type: Number, required: true},
       description:  {type: String, required: true},
-      recomendations: {type:Number, required: true}
+      recomendations: {type:Number, required: true, default: 0}
   });
   
 poi.plugin(autoIncrementId, {id:'order_seq', inc_field: 'poi_id'});

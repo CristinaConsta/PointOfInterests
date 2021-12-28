@@ -16,11 +16,8 @@ const session =require('express-session');
 const User = require("./app/models/User");
 const bcrypt = require('bcrypt');
 
-
-// const auth = require('./app/middleware/auth.js');
 const user=require("./app/controllers/user");
 const poi=require("./app/controllers/pointOfInterest");
-// const user_name= auth.user_name;
 const { PORT} = process.env;
 const db=require("./config/configdb.js");
 
@@ -128,21 +125,6 @@ app.post('/register-user', user.registerUser, (req, res)=>{
     res.render('login-user');
 });  
 
-// app.post('/register-user', async (req, res)=>{
-//     try{
-//         const new_pass= await bcrypt.hash(req.body.password, 10);
-//         var new_user=new User({
-//         username: req.body.username,
-//         email: req.body.email,
-//         password: new_pass
-//     });
-//     new_user.save((err, result)=>{
-//         if (err) return console.log(err);
-//     });
-//     res.redirect('/login');
-// }
-// catch(err) {res.redirect('/register');};
-// });
 
 //7
 app.post('/register', isLoggedIn, (req, res)=>{
@@ -150,44 +132,13 @@ app.post('/register', isLoggedIn, (req, res)=>{
 });
 
 //8
-// app.get('/addpoi', isLoggedIn, (req, res)=>{
-//     res.render('addpoi');
-// });
+app.get('/create-poi', isLoggedIn, (req, res)=>{
+    res.render('create-poi');
+});
 
-// -------------
-
-// auth.auth();
-
-// //1
-// app.get("/login-user", auth.isLoggedOut, (req, res) =>{
-//   res.render("login-user", {errors: {}});
-//  });
-
-// //2
-// app.get('/', auth.isLoggedOut, auth.isLoggedIn, (req, res)=>{
-//   res.render('index', {user_name});
-// });
-
-// //3
-// console.log({user_name});
-// app.post('/login-user', user.login);
-// console.log({user_name});
-
-// //4
-// app.get('/register-user', (req, res)=>{
-//   res.render('register-user', {errors: {}});
-// });
-
-// //5
-// app.get("/logout", (req, res)=>{
-//   req.logout();
-//   res.redirect('/');
-// });
-
-// //6
-// app.post('/register-user', user.registerUser, (req, res)=>{
-//     res.render('login-user');
-// });    
+app.get('/create-review', isLoggedIn, (req, res)=>{
+    res.render('review', {reviews: reviews});
+});
 
 
 app.listen(PORT, () => {

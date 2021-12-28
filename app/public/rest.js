@@ -9,7 +9,7 @@ alert(poi_id);
 
 async function fetch_poi(region)
 {
-    const response = await fetch(`/poi/${region}`);
+    const response = await fetch(`/create-poi/${region}`);
     const poi_data = await response.json();
     return poi_data;
 }
@@ -18,7 +18,7 @@ async function update_recomendations(button, region)
 {
 var poi_id=parseInt(button.id);
 alert(region);
-const response = await fetch(`/recom/${poi_id}`);
+const response = await fetch(`/review/${poi_id}`);
 const result = await response.json();
 if (result.success==1)
         alert("updated");
@@ -37,7 +37,67 @@ if (result.success==1)
 
 function print_details(data)
 {
-    var col = [];
+    var col = ["#", "Name", "Type", "Country", "Region", "Description", "Recommendations", ""];
+    var dataNames = [];
+        for (var i = 0; i < data.length; i++) {
+            for (var key in data[i]) {
+                if (dataNames.indexOf(key) === -1) {
+                    dataNames.push(key);
+                }
+            }
+        }
+
+    var num=1;
+    var table = document.createElement("table");
+
+    table.className = "table table-striped table-hover";
+
+    var tr = table.insertRow(-1);
+    for(var i=0; i<col.length; i++)
+    {
+        var th = document.createElement("th");
+        th.innerHTML = col[i];
+        tr.appendChild(th);
+    }
+
+    for (var i = 0; i < data.length; i++) {
+
+        tr = table.insertRow(-1);
+
+        for (var j = 1; j <= 5; j++) {
+            var tabCell = tr.insertCell(-1);
+            tabCell.innerHTML = data[i][dataNames[j]];
+        }
+
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][dataNames[8]];
+        tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][dataNames[9]];
+
+        var btn = document.createElement("BUTTON");
+        btn.id = data[i][dataNames[9]].toString();
+        btn.innerHTML = "Recommend";
+        btn.className = "btn btn-primary";
+        btn.addEventListener('click', function(e){
+            update_recomendations(this, data[i][dataNames[5]].toString());
+        }, false);
+        tabCell=tr.insertCell(-1);
+        tabCell.appendChild(btn);
+
+        /*var btn = document.createElement("BUTTON");
+        btn.id = data[i][col[9]].toString();
+        //btn.id = data[i][col[10].toString();
+        btn.innerHTML = "Update";
+        btn.style.fontSize = "14px";
+        btn.style.backgroundColor = '#4CAF50';
+        btn.addEventListener('click', function (e) {
+                update_recomendations(this, "East Ham");
+            }, false);
+        tabCell.appendChild(btn);*/
+        num=num+1;
+    }
+
+    /*var col = [];
         for (var i = 0; i < data.length; i++) {
             for (var key in data[i]) {
                 if (col.indexOf(key) === -1) {
@@ -49,6 +109,9 @@ function print_details(data)
         var num=1;
         // CREATE DYNAMIC TABLE.
         var table = document.createElement("table");
+
+        // Style the table
+        table.className = "table table-striped table-hover";
 
         // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
@@ -81,7 +144,7 @@ function print_details(data)
                 }, false);
             tabCell.appendChild(btn);
             num=num+1
-        }
+        }*/
 
         // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
 
@@ -100,7 +163,8 @@ function print_details(data)
 
 async function ajaxSearch(region) {
     //alert(`${region}`);
-     const response = await fetch(`/poi/${region}`);
+
+     const response = await fetch(`/create-poi/${region}`);
      const poi_data = await response.json();
      
      // Loop through the array of JSON objects and add the results to a <div>
@@ -115,7 +179,7 @@ async function ajaxSearch(region) {
      
      latavg=latavg/poi_data.length;
      lonavg=lonavg/poi_data.length;
-     //document.getElementById('results').innerHTML = html;
+    //  document.getElementById('results').innerHTML = html;
 
      var div = document.getElementById('map1'); 
      div.remove();

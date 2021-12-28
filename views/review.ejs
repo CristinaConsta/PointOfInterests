@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+  <div style="overflow-x:auto;">
+    <table id="rev">
+    <tr>
+    <th>Review Number</th>
+    <th>Poi_Id</th>
+    <th>Reviews</th>
+  </tr>
+  <%  
+        
+  reviews.forEach(review => {
+    
+%>
+
+                <tr>
+                    <td><%=  review._id  %></td>
+                    <td><%=  review.poi_id  %></td>
+                    <td><%=  review.review  %></td>
+                    
+                </tr> 
+
+      
+            <%  
+            });
+           %>
+    </table>
+</div>
+<div>
+
+<form action="/addreview" method="POST">
+<input type="text" name="poi_id" id="poi_id"/>
+<script>
+    var table = document.getElementById("rev");
+    var id= table.rows[1].cells[1].innerText;
+    document.getElementById('poi_id').value=id;
+</script>
+<textarea name="review" id="review" placeholder="Enter your review here" style="font-family:sans-serif;font-size:1.2em;">
+</textarea>
+<button type="submit">Add</button>
+</form>
+</div>
+</body>
+</html>
+<script>
+/*
+fetch('/addreview/${id}')
+.then(response => {
+return response.json( );
+})
+.then(result => {
+console.log(result);
+*/
+</script>

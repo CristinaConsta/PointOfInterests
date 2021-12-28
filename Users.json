@@ -1,27 +1,8 @@
 [{
-  "_id": {
-    "$oid": "61c0d2d2828c578ed2fba1d6"
-  },
   "username": "kate",
-  "password": "$2b$10$1GmwlswPvt8qxkt2Rh86/u3PpRiSmHOLTHKl0UrDJJuh3wJrltQFu",
-  "createdAt": {
-    "$date": "2021-12-20T19:00:34.072Z"
-  },
-  "updatedAt": {
-    "$date": "2021-12-20T19:00:34.072Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "61c5ea97dac0f69a9fafbbea"
-  },
+  "password": "$2b$10$1GmwlswPvt8qxkt2Rh86/u3PpRiSmHOLTHKl0UrDJJuh3wJrltQFu"
+},
+{
   "username": "tim",
-  "password": "$2b$10$TxQZTDQseoxlwBhLUjTsJ.rZx871ScqRBnaMV4WOuX/3vQT3BNWmm",
-  "createdAt": {
-    "$date": "2021-12-24T15:43:19.517Z"
-  },
-  "updatedAt": {
-    "$date": "2021-12-24T15:43:19.517Z"
-  },
-  "__v": 0
+  "password": "$2b$10$TxQZTDQseoxlwBhLUjTsJ.rZx871ScqRBnaMV4WOuX/3vQT3BNWmm"
 }]

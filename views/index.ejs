@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css'/>
+    <script type='text/javascript' src='/app/public/rest.js'></script>
     <script type='text/javascript' src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Points of Interest</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 
 <body>
@@ -28,7 +30,7 @@
             </div>
         </div>
             <div class="col-sm-4">
-            <form class="form-inline">
+            <form class="form-inline" id="form">
                 <div class="input-group">                    
                     <input type="text" class="form-control" placeholder="Search point of interest" name="search_data" id="search">
                     <a class="btn btn-secondary" id="search_poi">Search</a></button>                    
@@ -51,12 +53,24 @@
 <script>
  
     //----------------------------------------------------------------------------
-        document.getElementById("search_poi").addEventListener("click", ()=> {
-        // Read the product type from a text field
-        var region = document.getElementById('search').value;
-        ajaxSearch(region);
-    });
+        document.getElementById("search_poi").addEventListener("click", ()=> search());
+        $("#form").keydown(function(event){
+            if(event.keyCode===13)
+            {
+                search();
+                return false;
+            }
+        });
+        
+        function search()
+        {
+            // Read the product type from a text field
+            var region = document.getElementById('search').value;
+            ajaxSearch(region);
+        }
+
 </script>
+
 <div id="map1" class="container-fluid" style="width:100%; height:900px; margin-top:5px;" > </div>
 
 <script>
@@ -74,6 +88,5 @@ L.marker(pos).addTo(map);
 </script>  
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script>alert(user_name)</script>
 </body>
 </html>

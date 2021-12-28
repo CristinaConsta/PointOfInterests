@@ -4,20 +4,20 @@ exports.findReview=async (req, res)=>{
     try {
     var id=parseInt(req.params.poi_id);
     console.log(id);
-    await review.find({poi_id: id}, function (err, result) {
+    await review.find({poi_id: id}, function (err, reviews) {
        if (err)
           {console.log("Couldn't retrieve data");     
-          console.log(result);
+          console.log(reviews);
           }
-    else if (Object.keys(result).length === 0)
-        {  result=[{"Id": 0,
+    else if (Object.keys(reviews).length === 0)
+        {  reviews=[{"Id": 0,
            "poi_id": req.params.poi_id,
             "review": ""      
        }];
-           res.render('review', {result: result});
+           res.render('review', {reviews: reviews});
     }
        else
-          res.render('review', {result: result});
+          res.render('review', {reviews: reviews});
        //res.send(result);
  
     } )

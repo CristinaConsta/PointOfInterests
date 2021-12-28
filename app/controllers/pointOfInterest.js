@@ -11,7 +11,7 @@ exports.create=async(req, res)=>{
    data.lon=Number(req.body.lon);
    data.lat=Number(req.body.lat);
    data.description=req.body.description;
-   data.recomendations=Number(req.body.recommendations);
+   data.recomendations=0;
    console.log(data);
    await data.save(function(err, doc) {
      if (err) return console.error(err);
@@ -24,19 +24,17 @@ exports.create=async(req, res)=>{
 
  //Api created to find the point of Interest
 exports.find=(req, res)=>{
-  pointOfInterest.find({region: req.params.region}, function (err, result) {
+   pointOfInterest.find({region: {'$regex': req.params.region,$options:'i'}}, function (err, result) {
      if (err)
         console.log("Couldn't retrieve data");     
      console.log(result);
      res.send(result);
 
   })
-
 };
 
 
 //rest Api to increase the recommendations by user
-
  exports.update=async (req, res)=>{
   var id=Number(req.params.Id);
   console.log(id);
