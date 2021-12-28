@@ -27,7 +27,7 @@ exports.find=(req, res)=>{
    pointOfInterest.find({region: {'$regex': req.params.region,$options:'i'}}, function (err, result) {
      if (err)
         console.log("Couldn't retrieve data");     
-     console.log(result);
+     //console.log(result);
      res.send(result);
 
   })
@@ -37,7 +37,6 @@ exports.find=(req, res)=>{
 //rest Api to increase the recommendations by user
  exports.update=async (req, res)=>{
   var id=Number(req.params.Id);
-  console.log(id);
   pointOfInterest.updateOne({ poi_id: id }, { $inc: { recomendations: 1 }}, {new: false}).then((result) => {
         if (!result) {
              console.log("Error");

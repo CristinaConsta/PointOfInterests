@@ -20,8 +20,8 @@ async function update_recomendations(button, region)
     // alert(region);
     const response = await fetch(`/recomm/${poi_id}`);
     const result = await response.json();
-    if (result.success == 1)
-        alert("updated");
+    if (result.success == 1);
+        //alert("updated");
 
     ajaxSearch(region, window.document);
 }
@@ -30,14 +30,16 @@ async function update_recomendations(button, region)
 function print_details(data, doc)
 {
     var col = ["#", "Name", "Type", "Country", "Region", "Description", "Recommendations", ""];
-    var dataNames = [];
-        for (var i = 0; i < data.length; i++) {
-            for (var key in data[i]) {
-                if (dataNames.indexOf(key) === -1) {
-                    dataNames.push(key);
-                }
+   /* var dataNames = [];
+    for (var i = 0; i < data.length; i++) {
+        for (var key in data[i]) {
+            if (dataNames.indexOf(key) === -1) {
+                dataNames.push(key);
             }
         }
+    }*/
+
+    var dataNames = ["poi_id", "name", "type", "country", "region", "description", "recomendations"];
 
     var num=1;
     var table = document.createElement("table");
@@ -56,20 +58,21 @@ function print_details(data, doc)
 
         tr = table.insertRow(-1);
 
-        for (var j = 1; j <= 5; j++) {
+        for (var j = 0; j <= 6; j++) {
             var tabCell = tr.insertCell(-1);
             tabCell.innerHTML = data[i][dataNames[j]];
         }
 
-        var tabCell = tr.insertCell(-1);
+        /*var tabCell = tr.insertCell(-1);
         tabCell.innerHTML = data[i][dataNames[8]];
         tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][dataNames[9]];
+        tabCell.innerHTML = data[i][dataNames[9]];*/
 
         var btn = document.createElement("BUTTON");
-        btn.id = data[i][dataNames[1]].toString();
-        btn.name = i+data[i][dataNames[5]].toString();
-        //alert(data[i][dataNames[5]].toString());
+        // btn.id = data[i][dataNames[1]].toString();
+        // btn.name = i+data[i][dataNames[5]].toString();
+        btn.id = data[i][dataNames[0]].toString();
+        btn.name = i+data[i][dataNames[4]].toString();
         btn.innerHTML = "Recommend";
         btn.className = "btn btn-outline-primary";
         btn.addEventListener('click', function(e){
@@ -84,7 +87,7 @@ function print_details(data, doc)
     var div = document.createElement('div');
     div.id = 'show_data';
     div.class = "center";
-    div.style = "width:100%; height:600px";
+    div.style = "width:100%;";
     $("#result").empty();
     $("#result").append(div);
 
@@ -122,7 +125,7 @@ async function ajaxSearch(region, doc) {
     div.class = "container-fluid"
     div.style = "width:100%; height:900px; margin-top:5px"
     document.body.appendChild(div);
-    alert(latavg + "," + lonavg)
+    //alert(latavg + "," + lonavg)
     var map = L.map('map1').setView([latavg, lonavg], 14);
     mapLink =
         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
