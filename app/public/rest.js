@@ -17,7 +17,6 @@ async function fetch_poi(region)
 async function update_recomendations(button, region) 
 {
     var poi_id = parseInt(button.id);
-    // alert(region);
     const response = await fetch(`/recomm/${poi_id}`);
     const result = await response.json();
     if (result.success == 1);
@@ -63,20 +62,13 @@ function print_details(data, doc)
             tabCell.innerHTML = data[i][dataNames[j]];
         }
 
-        /*var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][dataNames[8]];
-        tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][dataNames[9]];*/
-
         var btn = document.createElement("BUTTON");
-        // btn.id = data[i][dataNames[1]].toString();
-        // btn.name = i+data[i][dataNames[5]].toString();
         btn.id = data[i][dataNames[0]].toString();
-        btn.name = i+data[i][dataNames[4]].toString();
+        btn.name = data[i][dataNames[4]].toString();
         btn.innerHTML = "Recommend";
         btn.className = "btn btn-outline-primary";
         btn.addEventListener('click', function(e){
-            update_recomendations(this, this.name.substring(1, this.name.length-1));
+            update_recomendations(this, this.name);
         }, false);
         tabCell=tr.insertCell(-1);
         tabCell.appendChild(btn);
@@ -102,6 +94,11 @@ async function ajaxSearch(region, doc) {
 
     const response = await fetch(`/create-poi/${region}`);
     const poi_data = await response.json();
+
+    // if(poi_data.length==0)
+    //     return;
+    // else
+    //     console.log(poi_data);
 
     // Loop through the array of JSON objects and add the results to a <div>
     let latavg = 0.0, lonavg = 0.0;
@@ -138,7 +135,7 @@ async function ajaxSearch(region, doc) {
     for (var i = 0; i < poi_data.length; i++) {
         var marker = L.marker([poi_data[i].lat, poi_data[i].lon]);
         var link = '/review/' + poi_data[i].poi_id;
-        marker.bindPopup('<a href="' + link + '" target="_blank" rel="noopener noreferrer nofollow ugc">' + poi_data[i].description + '</a>');
+        marker.bindPopup('<a href="' + link + '" target="_blank" rel="noopener noreferrer nofollow ugc">' + poi_data[i].name + " - " + poi_data[i].description + '</a>');
         marker.addTo(map);
     }
     print_details(poi_data, doc);

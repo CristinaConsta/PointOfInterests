@@ -133,8 +133,13 @@ app.post('/register', isLoggedIn, (req, res)=>{
 
 //8
 app.get('/create-poi', isLoggedIn, (req, res)=>{
-    res.render('create-poi');
+    res.render('create-poi', {lng: null, lat: null});
 });
+
+app.get('/create-poi-map/:lng/:lat', isLoggedIn, (req, res)=>{
+    res.render('create-poi', {lng: req.params.lng, lat: req.params.lat});
+});
+
 
 app.get('/create-review', isLoggedIn, (req, res)=>{
     res.render('review', {reviews: reviews});

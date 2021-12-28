@@ -29,10 +29,8 @@ exports.find=(req, res)=>{
         console.log("Couldn't retrieve data");     
      //console.log(result);
      res.send(result);
-
   })
 };
-
 
 //rest Api to increase the recommendations by user
  exports.update=async (req, res)=>{
