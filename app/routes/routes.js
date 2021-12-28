@@ -14,8 +14,8 @@ module.exports = (app) => {
     // Create a new Note
     app.post('/create-poi', poi.create);
 
-    // Update a Note with noteId
-    app.get('/review/:Id', poi.update);
+    // Recommend a Note with noteId
+    app.get('/recomm/:Id', poi.update);
 
 
   // Retrieve all Reviews

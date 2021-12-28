@@ -10,7 +10,7 @@
             "description": "test"
         },
         {
-            "poi_poi_id": "3",
+            "poi_id": "3",
             "name": "New York",
             "type": "city",
             "country": "USA",
@@ -28,7 +28,7 @@
             "lon": "-0.1",
             "lat": "51.51",
             "description": "A very interesting place", 
-			"recomendations": "0"
+			      "recomendations": 0
 		},
         {
             "poi_id": "5",
