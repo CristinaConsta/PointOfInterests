@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 var autoIncrementId = require('mongoose-sequence')(mongoose);
 
 const poi = new mongoose.Schema({
-      poi_id: Number,
+      poi_id:       {type:Number, unique: true},
       name:         {type: String, required: true},
       type:         {type: String, required: true},
       country:      {type: String, required: true},

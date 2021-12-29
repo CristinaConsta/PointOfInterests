@@ -26,7 +26,7 @@ async function update_recomendations(button, region)
 }
 
 
-function print_details(data, doc)
+function print_details(data/*, doc*/)
 {
     var col = ["#", "Name", "Type", "Country", "Region", "Description", "Recommendations", ""];
    /* var dataNames = [];
@@ -90,7 +90,7 @@ function print_details(data, doc)
 }
 
 
-async function ajaxSearch(region, doc) {
+async function ajaxSearch(region/*, doc*/) {
 
     const response = await fetch(`/create-poi/${region}`);
     const poi_data = await response.json();
@@ -138,5 +138,15 @@ async function ajaxSearch(region, doc) {
         marker.bindPopup('<a href="' + link + '" target="_blank" rel="noopener noreferrer nofollow ugc">' + poi_data[i].name + " - " + poi_data[i].description + '</a>');
         marker.addTo(map);
     }
-    print_details(poi_data, doc);
+    print_details(poi_data/*, doc*/);
+
+    map.on("click", onMapClick);
+
+    function onMapClick(e)
+    {
+        //createPOIFromMap(e.latlng.lng, e.latlng.lat);
+        window.location.href = "create-poi-map/"+e.latlng.lng+"/"+e.latlng.lat;
+    }
 }
+
+exports.module = {ajaxSearch};

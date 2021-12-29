@@ -40,7 +40,6 @@ exports.login = async (req, res) => {
   }
     const match = await bcrypt.compare(req.body.password, user.password);
     if (match) {
-      // req.session.userID=user._id;
       res.render("index", user.username);
       console.log(user.username);
       return

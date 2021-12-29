@@ -22,18 +22,30 @@
             <div class="mb-3">
               <label for="name" class="col-form-label">Name:</label>
               <input id="name" name="name" type="text" class="form-control">
+              <% if (errors["name"]) { %>         
+                <p style="color: red"><%= errors["name"].message %></p> 
+              <% } %>
             </div>
             <div class="mb-3">
               <label for="type" class="col-form-label">Type:</label>
               <input id="type" name="type" type="text" class="form-control">
+              <% if (errors["type"]) { %>         
+                <p style="color: red"><%= errors["type"].message %></p> 
+              <% } %>
             </div>
             <div class="mb-3">
               <label for="country" class="col-form-label">Country:</label>
               <input id="country" name="country" type="text" class="form-control">
+              <% if (errors["country"]) { %>         
+                <p style="color: red"><%= errors["country"].message %></p> 
+              <% } %>
             </div>
             <div class="mb-3">
               <label for="region" class="col-form-label">Region:</label>
               <input id="region" name="region" type="text" class="form-control">
+              <% if (errors["region"]) { %>         
+                <p style="color: red"><%= errors["region"].message %></p> 
+              <% } %>
             </div>
             <div class="mb-3">
               <label for="longitude" class="col-form-label">Longitude:</label>
@@ -42,6 +54,9 @@
                 <% } %>
                   <% if (!lng) { %>
                     <input id="lon" name="lon" type="longitude" class="form-control">
+                    <% if (errors["lng"]) { %>         
+                      <p style="color: red"><%= errors["lng"].message %></p> 
+                    <% } %>
                     <% }%>
             </div>
             <div class="mb-3">
@@ -51,11 +66,17 @@
                 <% } %>
                   <% if (!lat) { %>
                     <input id="lat" name="lat" type="latitude" class="form-control">
+                    <% if (errors["lat"]) { %>         
+                      <p style="color: red"><%= errors["lat"].message %></p> 
+                    <% } %>
                     <% }%>
             </div>
             <div class="mb-3">
               <label for="description" class="col-form-label">Description:</label>
               <input id="description" name="description" type="text" class="form-control">
+              <% if (errors["description"]) { %>         
+                <p style="color: red"><%= errors["description"].message %></p> 
+              <% } %>
             </div>
             <hr>
             <a role="button" id="cancel" type="reset" class="btn btn-danger" href="/">Cancel</a>

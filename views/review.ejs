@@ -1,53 +1,55 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Review List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  <title>Review List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
+
 <body>
+
+  <div class="col-sm-5 m-5">
   <div style="overflow-x:auto;">
-    <table id="rev">
-    <tr>
-    <th>Review Number</th>
-    <th>Poi_Id</th>
-    <th>Reviews</th>
-  </tr>
-  <%  
-        
-  reviews.forEach(review => {
-    
-%>
-
-                <tr>
-                    <td><%=  review._id  %></td>
-                    <td><%=  review.poi_id  %></td>
-                    <td><%=  review.review  %></td>
-                    
-                </tr> 
-
-      
-            <%  
-            });
-           %>
+    <h1 class = "title"><%= name[0].name%></h1>
+    <table id="rev" class="table table-striped table-hover";>
+      <tr>
+        <th>Reviews</th>
+      </tr>
+       <% 
+      reviews.forEach(review => {
+        %>
+        <tr>
+          <td>
+            <%= review.review %>
+          </td>
+        </tr>
+        <% 
+          }); 
+        %>
     </table>
-</div>
-<div>
+  </div>
+  <div>
+    <form action="/addreview" method="POST">
+    <hr>
+      <h4>Please leave your review</h4>
+      <input type="text" class="invisible" name="poi_id" id="poi_id" value="<%=id%>"/>
+      <script>
+        var table = document.getElementById("rev");
+        var id = table.rows[1].cells[1].innerText;
+        document.getElementById('poi_id').value = id;
+      </script>
+      <div class="form-floating">
+        <textarea class="form-control" placeholder="Enter your review" id="review" name="review"></textarea>
+        <label for="floatingTextarea">Enter your review</label>
+      </div>
+      <br>
+      <button class="btn btn-outline-info" type="submit">Add review</button>
+    </form>
+  </div>
+  </div>
 
-<form action="/addreview" method="POST">
-<input type="text" name="poi_id" id="poi_id"/>
-<script>
-    var table = document.getElementById("rev");
-    var id= table.rows[1].cells[1].innerText;
-    document.getElementById('poi_id').value=id;
-</script>
-<textarea name="review" id="review" placeholder="Enter your review here" style="font-family:sans-serif;font-size:1.2em;">
-</textarea>
-<button type="submit">Add</button>
-</form>
-</div>
-
-<script>
+  <script>
 //   fetch('/addreview/${id}')
 //     .then(response => {
 //     return response.json( );
@@ -57,4 +59,5 @@
 // </script>
 
 </body>
+
 </html>

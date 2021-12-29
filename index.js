@@ -16,6 +16,7 @@ const session =require('express-session');
 const User = require("./app/models/User");
 const bcrypt = require('bcrypt');
 
+
 const user=require("./app/controllers/user");
 const poi=require("./app/controllers/pointOfInterest");
 const { PORT} = process.env;
@@ -92,6 +93,7 @@ function isLoggedOut(req, res, next)
     res.redirect('/');
 }
 
+
 //1
 app.get("/login-user", isLoggedOut, (req, res) =>{
       res.render("login-user", {errors: {}});
@@ -133,11 +135,11 @@ app.post('/register', isLoggedIn, (req, res)=>{
 
 //8
 app.get('/create-poi', isLoggedIn, (req, res)=>{
-    res.render('create-poi', {lng: null, lat: null});
+    res.render('create-poi', {lng: null, lat: null, errors:{}});
 });
 
 app.get('/create-poi-map/:lng/:lat', isLoggedIn, (req, res)=>{
-    res.render('create-poi', {lng: req.params.lng, lat: req.params.lat});
+    res.render('create-poi', {lng: req.params.lng, lat: req.params.lat, errors:{}});
 });
 
 
