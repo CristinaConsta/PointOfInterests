@@ -9,18 +9,19 @@ module.exports = (app) => {
     app.use(express.urlencoded({extended: true}));
 
     // RestAPI for retrieving points of interests by region
-    app.get('/create-poi/:region', poi.find);
+    app.get('/find-poi/:region', poi.find);
        
-    // Create a new Note
+    // Create a new point of interest
     app.post('/create-poi', poi.create);
 
-    // Recommend a Note with noteId
+    // Recommend a poi
     app.get('/recomm/:Id', poi.update);
 
 
-  // Retrieve all Reviews
+  // Retrieve all Reviews for a POI
    app.get('/review/:poi_id', review.findReview); 
 
-  //  Add review
+
+  //  Add a review to a POI
    app.post('/addreview', review.addReview); 
 };

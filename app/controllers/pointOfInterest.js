@@ -7,8 +7,8 @@ exports.create=async(req, res)=>{
   try{
   let newpoi=await pointOfInterest.findOne({name: req.body.name});
   if(newpoi){
-    res.render("create-poi" , {errors: {name: {message: "The name is already used"}}})
-    return
+    res.render("create-poi" , {lon:null, lat:null, errors: {name: {message: "The name is already used"}}})
+    return;
   }else {
    newpoi = new pointOfInterest({
    name:req.body.name,
@@ -20,19 +20,19 @@ exports.create=async(req, res)=>{
    description:req.body.description,
    recomendations:0,});
    if(!req.body.name){
-    res.render("create-poi", {lng:null, lat:null, errors: {name: {message: "Please fill a name"}} })
+    res.render("create-poi", {lon:null, lat:null, errors: {name: {message: "Please fill a name"}} })
     return
    }else if(!req.body.type){
-    res.render("create-poi", {lng:null, lat:null, errors: {name: {message: "Please fill a type"}} })
+    res.render("create-poi", {lon:null, lat:null, errors: {name: {message: "Please fill a type"}} })
     return
    }else if(!req.body.country){
-    res.render("create-poi", {lng:null, lat:null, errors: {name: {message: "Please fill a country"}} })
+    res.render("create-poi", {lon:null, lat:null, errors: {name: {message: "Please fill a country"}} })
     return
    }else if(!req.body.region){
-    res.render("create-poi", {lng:null, lat:null, errors: {name: {message: "Please fill a region"}} })
+    res.render("create-poi", {lon:null, lat:null, errors: {name: {message: "Please fill a region"}} })
     return
    }else if(!req.body.description){
-    res.render("create-poi", {lng:null, lat:null, errors: {name: {message: "Please fill a description"}} })
+    res.render("create-poi", {lon:null, lat:null, errors: {name: {message: "Please fill a description"}} })
     return
    }
    else{
@@ -47,7 +47,7 @@ exports.create=async(req, res)=>{
    };
 
 
- //Api created to find the point of Interest by Region
+ //Api endpoint to find the point of Interest by Region
 
 exports.find=(req, res)=>{
    pointOfInterest.find({region: {'$regex': req.params.region,$options:'i'}}, function (err, result) {
@@ -58,8 +58,7 @@ exports.find=(req, res)=>{
   })
 };
 
-//rest Api to increase the recommendations by user
-
+//Api endpoint to increase the recommendations by user
  exports.update=async (req, res)=>{
   var id=Number(req.params.Id);
   pointOfInterest.updateOne({ poi_id: id }, { $inc: { recomendations: 1 }}, {new: false}).then((result) => {

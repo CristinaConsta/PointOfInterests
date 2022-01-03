@@ -49,13 +49,13 @@
             </div>
             <div class="mb-3">
               <label for="longitude" class="col-form-label">Longitude:</label>
-              <% if (lng) { %>
-                <input readonly id="lon" name="lon" type="longitude" class="form-control" value="<%= lng %>">
+              <% if (lon) { %>
+                <input readonly id="lon" name="lon" type="longitude" class="form-control" value="<%= lon %>">
                 <% } %>
-                  <% if (!lng) { %>
+                  <% if (!lon) { %>
                     <input id="lon" name="lon" type="longitude" class="form-control">
-                    <% if (errors["lng"]) { %>         
-                      <p style="color: red"><%= errors["lng"].message %></p> 
+                    <% if (errors["lon"]) { %>         
+                      <p style="color: red"><%= errors["lon"].message %></p> 
                     <% } %>
                     <% }%>
             </div>

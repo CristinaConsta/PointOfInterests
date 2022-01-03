@@ -33,10 +33,7 @@ mongoose.connection.on("error", (err) => {
 
 var user_name="";
 
-//here are all the middleware
-// app.set('view engine', 'hbs');
-// app.use(express.static(__dirname+'/public'));
-// hbs.registerPartials(partialspath);
+//middlewares
 app.use(session({
     secret: "secret",
     resave:false,
@@ -47,7 +44,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 //we set middleware related with passport
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -64,7 +60,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 //here we will define the local strategy for authentication
-
 passport.use(new localstrategy(
     function(username, password, done) {
       user_name=username;
@@ -93,53 +88,48 @@ function isLoggedOut(req, res, next)
     res.redirect('/');
 }
 
-
-//1
 app.get("/login-user", isLoggedOut, (req, res) =>{
       res.render("login-user", {errors: {}});
      });
 
-//2
+
 app.get('/', isLoggedIn, (req, res)=>{
     res.render('index', {user_name});
 });
 
-//3
+
 app.post('/login-user', passport.authenticate('local',{
     successRedirect: '/',
     failureRedirect: '/login-user'
 }));
 
-//4
+
 app.get('/register-user', (req, res)=>{
     res.render('register-user', {errors: {}});
 });
 
-//5
+
 app.get("/logout", (req, res)=>{
     req.logout();
     res.redirect('/');
 });
-
-//6
 
 app.post('/register-user', user.registerUser, (req, res)=>{
     res.render('login-user');
 });  
 
 
-//7
 app.post('/register', isLoggedIn, (req, res)=>{
     res.render('register');
 });
 
-//8
+
 app.get('/create-poi', isLoggedIn, (req, res)=>{
-    res.render('create-poi', {lng: null, lat: null, errors:{}});
+    res.render('create-poi', {lon: null, lat: null, errors:{}});
 });
 
-app.get('/create-poi-map/:lng/:lat', isLoggedIn, (req, res)=>{
-    res.render('create-poi', {lng: req.params.lng, lat: req.params.lat, errors:{}});
+app.get('/create-poi-map/:lon/:lat', isLoggedIn, (req, res)=>{
+    res.render('create-poi', {lon: req.params.lon, lat: req.params.lat, errors:{}});
 });
 
 

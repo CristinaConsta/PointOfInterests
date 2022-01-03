@@ -5,7 +5,18 @@
   <title>Review List</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+
+<script>
+  function validateReview(){
+    if ($.trim(("#review").val()) != "")
+    {
+      alert("Please fill the review textbox");
+      return false;
+    }
+  }
+</script>
 
 <body>
 
@@ -30,7 +41,7 @@
     </table>
   </div>
   <div>
-    <form action="/addreview" method="POST">
+    <form action="/addreview" method="POST" onsubmit="return validateReview()">
     <hr>
       <h4>Please leave your review</h4>
       <input type="text" class="invisible" name="poi_id" id="poi_id" value="<%=id%>"/>
@@ -48,15 +59,6 @@
     </form>
   </div>
   </div>
-
-  <script>
-//   fetch('/addreview/${id}')
-//     .then(response => {
-//     return response.json( );
-//   })
-//     .then(result => {
-//     console.log(result);
-// </script>
 
 </body>
 

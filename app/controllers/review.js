@@ -14,11 +14,9 @@ exports.findReview = async (req, res) => {
 
 exports.addReview = async (req, res) => {
    try {
-      console.log(req.body);
       var data = new Review();
       data.poi_id = req.body.poi_id;
       data.review = req.body.review;
-      console.log(data);
       await data.save(function (err, doc) {
          if (err) return console.error(err);
          res.redirect('/');
