@@ -25,6 +25,14 @@ To import the initial data into the MongoDB database run:
 node seeder.js
 ```
 
+### Running and testing
+
 Modify the localhost port if needed in .env file - by default is 3000.
+
+Run
+```
+npm run dev
+```
+to start the application and then follow the link provided.
 
 
